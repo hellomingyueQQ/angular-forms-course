@@ -2,10 +2,18 @@
   <mat-card-title>Login</mat-card-title>
   <mat-card-content>
     <form class="login-form data-form" #loginForm="ngForm">
+      <!-- form添加了nonvalidate属性，这是为了阻止html5的validate -->
       <mat-form-field>
-        <input matInput type="email" name="email" placeholder="Email" ngModel #email="ngModel" required>
+        <input matInput type="email" name="email" placeholder="Email" email ngModel #email="ngModel" required minlength="3"
+          maxlength="20" pattern="[a-z]+">
+        <!-- maxlength只会阻止用户操作，不会报错，errors里面不会出现属性 -->
         <mat-error *ngIf="email.errors?.required">The email is mandatory.</mat-error>
-        <!-- 如果不加ngif条件，那么这个错误就会出现，不管是什么原因导致invalid -->
+        <mat-error *ngIf="email.errors?.minlength">
+          Your email must have {{email.errors.minlength.requiredLength}} chars, but it only has
+          {{email.errors.minlength.actualLength}}.
+        </mat-error>
+        <!-- 现在表现是输入两个char，不会出错，转到下一个input，才会出现，这是正确的UI设计 -->
+         <mat-error *ngIf="email.errors?.email">This is not a valid email.</mat-error>
       </mat-form-field>
 
       <mat-form-field>
