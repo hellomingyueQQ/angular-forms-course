@@ -15,4 +15,6 @@
   margin-bottom: 10px;
 }
 
-
+input.ng-invalid{
+  border:3px solid red;
+}

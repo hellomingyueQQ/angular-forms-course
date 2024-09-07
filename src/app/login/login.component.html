@@ -5,7 +5,11 @@
       <mat-form-field>
 
         <input matInput type="email" name="email" placeholder="Email" ngModel="" #email="ngModel" required>
-
+        <!-- ngModel会根据input value的validity state 添加class ng-给input -->
+        <!-- ng-valid ng-invalid ng-touched ng-untouched ng-pristine ng-dirty -->
+        <!-- 操作时候可以通过这些css观察这些属性 -->
+        <!-- prisitine 意味用户从没有输入新值 -->
+        <!-- dirty用户已经输入值了 -->
       </mat-form-field>
 
       <mat-form-field>
