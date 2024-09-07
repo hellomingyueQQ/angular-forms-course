@@ -1,13 +1,15 @@
 <mat-card class="login-page">
   <mat-card-title>Login</mat-card-title>
   <mat-card-content>
-
-    <form class="login-form data-form">
-
+    <!-- FormModule导入，NgForm隐式作用于form元素 -->
+    <!-- selector: 'form:not([ngNoForm]):not([formGroup]),ng-form,[ngForm]', -->
+    <!-- 这就是我定义指令，selector input起作用的原因，作用范围特别大 -->
+    <!--指令定义地址: https://github.com/angular/angular/blob/main/packages/forms/src/directives/ng_form.ts  -->
+    <form class="login-form data-form" #loginForm="ngForm">
+      <!-- 查看readme，有对ngForm变量的解释，对NgForm实例的引用，api包含了form的value，valid -->
       <mat-form-field>
 
-        <input matInput type="email" name="email"
-               placeholder="Email">
+        <input matInput type="email" name="email" placeholder="Email">
 
       </mat-form-field>
 
@@ -17,7 +19,7 @@
 
       </mat-form-field>
 
-      <button mat-raised-button color="primary">
+      <button mat-raised-button color="primary" (click)="test(loginForm)">
         Login
       </button>
 
