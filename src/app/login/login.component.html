@@ -4,16 +4,14 @@
     <form class="login-form data-form" #loginForm="ngForm">
       <mat-form-field>
         <input matInput type="email" name="email" placeholder="Email" ngModel #email="ngModel" required>
-        <!-- ngModel会根据input value的validity state 添加class ng-给input -->
-        <!-- ng-valid ng-invalid ng-touched ng-untouched ng-pristine ng-dirty -->
-        <!-- 操作时候可以通过这些css观察这些属性 -->
-        <!-- prisitine 意味用户从没有输入新值 -->
-        <!-- dirty用户已经输入值了 -->
+        <mat-error *ngIf="email.errors?.required">The email is mandatory.</mat-error>
+        <!-- 如果不加ngif条件，那么这个错误就会出现，不管是什么原因导致invalid -->
       </mat-form-field>
 
       <mat-form-field>
 
-        <input matInput type="password" placeholder="Password" name="password" ngModel #password="ngModel" required>
+        <input matInput type=" password" placeholder="Password" name="password" ngModel #password="ngModel" required>
+
       </mat-form-field>
 
       <button mat-raised-button color="primary" (click)="login(loginForm)">
@@ -22,7 +20,7 @@
 
     </form>
     <div class="form-val">
-      {{email.valid }} {{password.valid}}
+      {{email?.errors | json }}
     </div>
 
   </mat-card-content>
