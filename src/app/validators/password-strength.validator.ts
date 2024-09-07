@@ -16,3 +16,6 @@ export function createPasswordStrengthValidator(): ValidatorFn {
     return !passwordValid ? { passwordStrength: true } : null;
   };
 }
+
+// Jim cooper的课程是需要validator function，不需要vadalidator directive
+// very good, 这节课将validator更加推进一步
