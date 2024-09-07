@@ -3,12 +3,8 @@
   <mat-card-content>
     <form class="login-form data-form" #loginForm="ngForm" (ngSubmit)="login(loginForm, $event)">
       <mat-form-field>
-        <input matInput type="email" placeholder="Email" email [(ngModel)]="val.email" name="email" #email="ngModel"
+        <input matInput type="email" placeholder="Email" email [ngModel]="val.email" name="email" #email="ngModel"
           required minlength="3" maxlength="20">
-        <!-- [ngModel]这种写法ngmodel和ngform都会得到通知，但是不会更新typescript中绑定的数据，属于单向 -->
-        <!-- [(ngModel)]是双向的 -->
-        <!-- 作者通常不用ngModel双向绑定，他会用loginForm，在事件的handler传递变量，或者loginForm.value -->
-        <!-- 这个建议可以用在pop上，就是不用viewchild变量，直接用模板变量传table就可以了 -->
         <mat-error *ngIf="email.errors?.required">The email is mandatory.</mat-error>
         <mat-error *ngIf="email.errors?.minlength">
           Your email must have {{email.errors.minlength.requiredLength}} chars, but it only has
