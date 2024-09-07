@@ -3,8 +3,13 @@
   <mat-card-content>
     <form class="login-form data-form" #loginForm="ngForm" (ngSubmit)="login(loginForm, $event)">
       <mat-form-field>
-        <input matInput type="email" name="email" placeholder="Email" email ngModel #email="ngModel" required
-          minlength="3" maxlength="20">
+        <input matInput type="email" name="email" placeholder="Email" email ngModel [ngModelOptions]="{updateOn:'blur'}"
+          #email="ngModel" required minlength="3" maxlength="20" (ngModelChange)="onEmailChange($event)">
+        <!-- 希望验证email的时机是，tap away to another filed，而不是输入一个值就验证一下 -->
+        <!-- ngModelChange不会次次trigger， -->
+        <!-- email.value也不会次次trigger，那么 ngform也不会次次得到notification -->
+         <!-- updateOn:change就是次次都trigger，这应该是default value -->
+          <!-- updateOn:submit则是submit trigger时候，value才会set，ngModelchange才会trigger， form才会notified -->
         <mat-error *ngIf="email.errors?.required">The email is mandatory.</mat-error>
         <mat-error *ngIf="email.errors?.minlength">
           Your email must have {{email.errors.minlength.requiredLength}} chars, but it only has
@@ -22,11 +27,10 @@
       <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">
         Login
       </button>
-      <!-- 不需要binding click时间，需要设置type为submit ,添加ngsubmit，阻止原生submit-->
-
+   <!-- 如果updateOn为submit，去掉disabled -->
     </form>
     <div class="form-val">
-      {{email?.errors | json }}
+      {{email.value | json }}
     </div>
 
   </mat-card-content>
