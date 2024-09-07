@@ -16,10 +16,18 @@
       <mat-form-field>
 
         <input matInput type="password" placeholder="Password" name="password" [ngModel]="val.password"
-          #password="ngModel" required passwordStrength>
+          #password="ngModel" required passwordStrength minlength="8">
         <mat-error *ngIf="password.errors?.required">The password is mandatory.</mat-error>
         <mat-error *ngIf="password.errors?.passwordStrength">Your password must have lower case, upper case and numeric
           characters.</mat-error>
+        <!-- 上面两个error不会同时出现，因为原理 -->
+        <mat-error *ngIf="password.errors?.minlength">
+          Your password must have {{password.errors.minlength.requiredLength}} chars, but it only has
+          {{password.errors.minlength.actualLength}}.
+        </mat-error>
+        <!-- 但是添加minlength后，输入一个字母，然后tap away，会出现两个error message -->
+        <!-- 出现多个error message，1， 用户体验不好  2. 空间不够  -->
+        <!-- 好的设计，一次只出现一个error message -->
       </mat-form-field>
 
       <button mat-raised-button color=" primary" type="submit" [disabled]="!loginForm.valid">
