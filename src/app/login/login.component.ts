@@ -11,7 +11,6 @@ export class LoginComponent implements OnInit {
     email: "hello@gmail.com",
     password: "123456",
   };
-  // 设置初始值
   constructor() {}
 
   ngOnInit() {}
