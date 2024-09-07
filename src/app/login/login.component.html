@@ -3,13 +3,8 @@
   <mat-card-content>
     <form class="login-form data-form" #loginForm="ngForm" (ngSubmit)="login(loginForm, $event)">
       <mat-form-field>
-        <input matInput type="email" placeholder="Email" email ngModel
-          [ngModelOptions]="{name:'email', standalone:true}" #email="ngModel" required minlength="3" maxlength="20"
-          (ngModelChange)="onEmailChange($event)">
-        <!-- name='email'不方便用的时候，name是动态的，可以放在ngModelOptions里面 -->
-        <!-- standalone disconnected from ngForm -->
-        <!-- ngForm意识不到email -->
-        <!-- ngModelChange和ngModelOptions都是极少数情况使用 -->
+        <input matInput type="email" placeholder="Email" email ngModel name="email" #email="ngModel" required
+          minlength="3" maxlength="20">
         <mat-error *ngIf="email.errors?.required">The email is mandatory.</mat-error>
         <mat-error *ngIf="email.errors?.minlength">
           Your email must have {{email.errors.minlength.requiredLength}} chars, but it only has
@@ -27,7 +22,6 @@
       <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">
         Login
       </button>
-      <!-- 如果updateOn为submit，去掉disabled -->
     </form>
     <div class="form-val">
       {{loginForm.value | json }}
