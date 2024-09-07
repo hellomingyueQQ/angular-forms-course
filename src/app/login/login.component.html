@@ -1,30 +1,28 @@
 <mat-card class="login-page">
   <mat-card-title>Login</mat-card-title>
   <mat-card-content>
-    <form class="login-form data-form" #loginForm="ngForm">
-      <!-- form添加了nonvalidate属性，这是为了阻止html5的validate -->
+    <form class="login-form data-form" #loginForm="ngForm" (ngSubmit)="login(loginForm, $event)">
       <mat-form-field>
-        <input matInput type="email" name="email" placeholder="Email" email ngModel #email="ngModel" required minlength="3"
-          maxlength="20" pattern="[a-z]+">
-        <!-- maxlength只会阻止用户操作，不会报错，errors里面不会出现属性 -->
+        <input matInput type="email" name="email" placeholder="Email" email ngModel #email="ngModel" required
+          minlength="3" maxlength="20">
         <mat-error *ngIf="email.errors?.required">The email is mandatory.</mat-error>
         <mat-error *ngIf="email.errors?.minlength">
           Your email must have {{email.errors.minlength.requiredLength}} chars, but it only has
           {{email.errors.minlength.actualLength}}.
         </mat-error>
-        <!-- 现在表现是输入两个char，不会出错，转到下一个input，才会出现，这是正确的UI设计 -->
-         <mat-error *ngIf="email.errors?.email">This is not a valid email.</mat-error>
+        <mat-error *ngIf="email.errors?.email">This is not a valid email.</mat-error>
       </mat-form-field>
 
       <mat-form-field>
 
-        <input matInput type=" password" placeholder="Password" name="password" ngModel #password="ngModel" required>
+        <input matInput type="password" placeholder="Password" name="password" ngModel #password="ngModel" required>
 
       </mat-form-field>
 
-      <button mat-raised-button color="primary" (click)="login(loginForm)">
+      <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">
         Login
       </button>
+      <!-- 不需要binding click时间，需要设置type为submit ,添加ngsubmit，阻止原生submit-->
 
     </form>
     <div class="form-val">

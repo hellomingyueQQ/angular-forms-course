@@ -11,7 +11,8 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {}
 
-  login(result: NgForm) {
-    console.log(result.value, result.valid);
+  login(result: NgForm, submit) {
+    // submit如果不给类型，就是any类型，果然typescript是为了帮助编程的
+    console.log(result.value, result.valid, submit);
   }
 }
