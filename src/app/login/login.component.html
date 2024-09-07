@@ -4,19 +4,13 @@
     <form class="login-form data-form" #loginForm="ngForm">
       <mat-form-field>
 
-        <input matInput type="email" name="email" placeholder="Email" ngModel="" #email="ngModel">
-        <!-- ngModel 将control连接到form -->
-        <!-- 这样form就可以track control的value，且validate -->
+        <input matInput type="email" name="email" placeholder="Email" ngModel="" #email="ngModel" required>
 
       </mat-form-field>
 
       <mat-form-field>
 
-        <input matInput type="password" placeholder="Password" name="password" ngModel #password="ngModel">
-        <!-- template form不用formcontrolname，所以为了track data，template form的control必须有name，否则报错 -->
-        <!-- ngModel会监控有关event，获取值 -->
-        <!-- https://github.com/angular/angular/blob/main/packages/forms/src/directives/ng_model.ts 看不懂 -->
-        <!-- ngModel指令也有exportAs -->
+        <input matInput type="password" placeholder="Password" name="password" ngModel #password="ngModel" required>
       </mat-form-field>
 
       <button mat-raised-button color="primary" (click)="login(loginForm)">
@@ -25,9 +19,8 @@
 
     </form>
     <div class="form-val">
-      {{email.value }} {{password.value}}
+      {{email.valid }} {{password.valid}}
     </div>
-    <!-- ngForm会与ngModel进行互动，这样就可以监控所有control -->
 
   </mat-card-content>
 </mat-card>
