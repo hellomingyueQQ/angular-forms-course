@@ -8,6 +8,14 @@
         </mat-hint>
         <mat-error *ngIf="courseTitle.errors?.titleExsits">This title is already being used.</mat-error>
     </mat-form-field>
+    <mat-form-field>
+        <mat-select placeholder="Select category" formControlName="category">
+            <ng-container *ngFor="let category of (courseCategories$ |async)">
+                <mat-option [value]="category.code">{{category.description}}</mat-option>
+            </ng-container>
+            <!-- 这个ng-container用的好，不用添加多余元素 -->
+        </mat-select>
+    </mat-form-field>
 
     <mat-form-field>
         <input matInput placeholder="Release date" [matDatepicker]="releaseDataPicker" formControlName="releaseAt">

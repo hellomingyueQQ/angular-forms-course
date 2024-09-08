@@ -1,9 +1,13 @@
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, Validators } from "@angular/forms";
 import { CoursesService } from "../../services/courses.service";
 import { Observable } from "rxjs";
-import { filter } from "rxjs/operators";
 import { courseTitleValidator } from "../../validators/course-title.validator";
+
+interface CourseCategory {
+  code: string;
+  description: string;
+}
 
 @Component({
   selector: "create-course-step-1",
@@ -25,12 +29,16 @@ export class CreateCourseStep1Component implements OnInit {
       }, // 全部是同步的validator
     ],
     releaseAt: [new Date(), Validators.required],
+    category: ["BEGINNER", Validators.required],
     downloadsAllowed: [false, Validators.requiredTrue],
     longDescription: ["", [Validators.required, Validators.minLength(3)]],
   });
 
+  courseCategories$: Observable<CourseCategory>;
   constructor(private fb: FormBuilder, private courses: CoursesService) {}
-  ngOnInit() {}
+  ngOnInit() {
+    this.courseCategories$ = this.courses.findCourseCategories();
+  }
 
   get courseTitle() {
     return this.form.controls["title"];
