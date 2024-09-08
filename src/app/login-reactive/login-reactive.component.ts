@@ -3,6 +3,7 @@ import {
   FormBuilder,
   FormControl,
   FormGroup,
+  NonNullableFormBuilder,
   Validators,
 } from "@angular/forms";
 import { createPasswordStrengthValidator } from "../validators/password-strength.validator";
@@ -13,8 +14,6 @@ import { createPasswordStrengthValidator } from "../validators/password-strength
   styleUrls: ["./login-reactive.component.css"],
 })
 export class LoginReactiveComponent implements OnInit {
-
-  // form:FormGroup = this.fb.group({ // 这么写，就丧失了推测能力，智能提示 formGroup<any>
   form = this.fb.group({
     email: [
       "",
@@ -22,7 +21,11 @@ export class LoginReactiveComponent implements OnInit {
         validators: [Validators.required, Validators.email],
         updateOn: "blur",
       },
-    ],
+    ], //当使用NonNullableFormBuilder，这样定义就可以了，下面的代码会报错
+    // email: this.fb.nonNullable.control("", {
+    //   validators: [Validators.required, Validators.email],
+    //   updateOn: "blur",
+    // }), // 这样处理，reset后的email就不会是null，而是空字符串
     password: [
       "",
       [
@@ -33,8 +36,9 @@ export class LoginReactiveComponent implements OnInit {
     ],
   });
 
-  constructor(private fb: FormBuilder) {}
+  // constructor(private fb: FormBuilder) {}
 
+  constructor(private fb: NonNullableFormBuilder) {} //如果所有的字段都是non null，可以用NonNullableFormBuilder
   ngOnInit() {}
 
   get email() {
@@ -47,7 +51,9 @@ export class LoginReactiveComponent implements OnInit {
 
   login() {
     const formValue = this.form.value;
-    // email 和 password可以从初始值推测数据类型
-    // reactive form is strongly typed 
+  }
+  reset() {
+    this.form.reset();
+    console.log(this.form.value); // email和password都是null
   }
 }
