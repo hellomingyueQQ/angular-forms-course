@@ -19,6 +19,7 @@ export class LoginReactiveComponent implements OnInit {
       createPasswordStrengthValidator(),
     ],
   });
+  // 目前依然是用reactive的方式实现之前tempalte form的功能
 
   form = new FormGroup({
     email: this.email,
