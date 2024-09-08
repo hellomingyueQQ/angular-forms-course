@@ -1,0 +1,11 @@
+<input type="file" class="file-input">
+<!-- 很难加样式，于是隐藏，应该是用到了它的一些功能 -->
+<div class="file-upload">
+    <mat-form-field>
+        <input matInput [disabled]="true" [value]="fileName">
+        <!-- 这个组件不能被编辑，用户没有选择文件时候，为空 -->
+    </mat-form-field>
+    <button mat-mini-fab color="primary" class="upload-btn">
+        <mat-icon>attach_file</mat-icon>
+    </button>
+</div>
