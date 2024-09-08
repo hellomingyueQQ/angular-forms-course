@@ -50,4 +50,16 @@ export class LoginReactiveComponent implements OnInit {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {}
+
+  get email() {
+    return this.form.controls["email"]; // this.form.get('email') 根据提示，这个也可以用
+  }
+
+  get password() {
+    return this.form.controls["password"];
+  }
 }
+// 相比于template，reactive form的html只有formGroup和formControlName两个指令
+// formModel can be dynamic programmatically
+// validator可以使validator function,不需要在依赖注入中配置
+// 作者的观点，如果新项目，尽量用reactive form

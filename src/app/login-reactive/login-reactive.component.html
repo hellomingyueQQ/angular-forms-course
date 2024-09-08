@@ -3,22 +3,35 @@
   <mat-card-content>
 
     <form class="login-form data-form" [formGroup]="form">
-      <!-- formGroup关联template和component，formGroup属于ReactiveFormModule -->
 
       <mat-form-field>
 
         <input matInput type="email" name="email" placeholder="Email" formControlName="email">
-        <!-- inputfield bound to control -->
-
+        <mat-error *ngIf="email.errors?.required">The email is mandatory.</mat-error>
+        <mat-error *ngIf="email.errors?.minlength">
+          Your email must have {{email.errors.minlength.requiredLength}} chars, but it only has
+          {{email.errors.minlength.actualLength}}.
+        </mat-error>
+        <mat-error *ngIf="email.errors?.email">This is not a valid email.</mat-error>
       </mat-form-field>
 
       <mat-form-field>
 
         <input matInput type="password" placeholder="Password" formControlName="password">
+        <mat-error *ngIf="password.errors?.required">The password is mandatory.</mat-error>
 
       </mat-form-field>
+      <ng-container *ngIf="password.errors | onlyOneError:['minlength', 'passwordStrength'] as error">
+        <div class="field-message" *ngIf="error.passwordStrength">Your password must have lower case, upper case and
+          numeric
+          characters.</div>
+        <div class="field-message" *ngIf="error.minlength">
+          Your password must have {{password.errors.minlength.requiredLength}} chars, but it only has
+          {{password.errors.minlength.actualLength}}.
+        </div>
+      </ng-container>
 
-      <button mat-raised-button color="primary">
+      <button mat-raised-button color="primary" [disabled]="!form.valid">
         Login
       </button>
 
