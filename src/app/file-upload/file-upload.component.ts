@@ -21,6 +21,7 @@ export class FileUploadComponent {
   fileUploadError = false;
 
   fileName = "";
+  uploadProgress: number;
 
   constructor(private http: HttpClient) {}
 
@@ -34,14 +35,27 @@ export class FileUploadComponent {
       formData.append("thumbnail", file);
       this.fileUploadError = false;
       this.http
-        .post("/api/thumbnail-upload", formData)
+        .post("/api/thumbnail-upload", formData, {
+          reportProgress: true,
+          observe: "events",
+        })
         .pipe(
           catchError((err) => {
             this.fileUploadError = true;
             return of(err);
+          }),
+          finalize(() => {
+            this.uploadProgress = null;
           })
         )
-        .subscribe();
+        .subscribe((event) => {
+          if (event.type === HttpEventType.UploadProgress) {
+            this.uploadProgress = Math.round(
+              (100 * event.loaded) / event.total
+            );
+            console.log(this.uploadProgress);
+          }
+        });
     }
   }
 }
