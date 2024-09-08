@@ -18,14 +18,30 @@ import { noop, of } from "rxjs";
 export class FileUploadComponent {
   @Input()
   requiredFileType: string;
+  fileUploadError = false;
 
   fileName = "";
+
+  constructor(private http: HttpClient) {}
 
   onFileSelected(event) {
     const file: File = event.target.files[0];
     if (file) {
       this.fileName = file.name;
       console.log(this.fileName);
+
+      const formData = new FormData(); //浏览器功能
+      formData.append("thumbnail", file);
+      this.fileUploadError = false;
+      this.http
+        .post("/api/thumbnail-upload", formData)
+        .pipe(
+          catchError((err) => {
+            this.fileUploadError = true;
+            return of(err);
+          })
+        )
+        .subscribe();
     }
   }
 }
