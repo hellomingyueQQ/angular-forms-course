@@ -3,10 +3,21 @@
         <input matInput placeholder="Course title" formControlName="title" #title>
         <mat-hint align="end">
             {{title.value.length}} / 60
+            <!-- 这里的title是HTMLInputElement，api仅限于dom，无法拿到errors -->
             <!-- 原来可以通过变量直接访问control啊，不需要通过form，great -->
         </mat-hint>
         <mat-error *ngIf="courseTitle.errors?.titleExsits">This title is already being used.</mat-error>
     </mat-form-field>
 
+    <mat-form-field>
+        <input matInput placeholder="Release date" [matDatepicker]="releaseDataPicker" formControlName="releaseAt">
+        <mat-datepicker-toggle matSuffix [for]="releaseDataPicker"></mat-datepicker-toggle>
+        <mat-datepicker #releaseDataPicker></mat-datepicker>
+    </mat-form-field>
+
 </div>
 <!-- 想创建一个validator，异步的，查看course是否存在于数据库，需要httpcall -->
+
+<div class="form-val">
+    {{form.value | json}}
+</div>

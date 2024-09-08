@@ -24,6 +24,7 @@ export class CreateCourseStep1Component implements OnInit {
         updateOn: "blur", //避免频繁发送请求
       }, // 全部是同步的validator
     ],
+    releaseAt: [new Date(), Validators.required],
   });
 
   constructor(private fb: FormBuilder, private courses: CoursesService) {}
