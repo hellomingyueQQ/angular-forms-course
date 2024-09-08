@@ -1,1 +1,11 @@
-<div [formGroup]="form"></div>
+<div [formGroup]="form">
+    <mat-radio-group formControlName="courseType">
+        <mat-radio-button value="free">Free</mat-radio-button>
+        <mat-radio-button value="premium">Premium</mat-radio-button>
+        <!-- 都要有value -->
+    </mat-radio-group>
+</div>
+
+<div class="form-val">
+    {{form.value | json}}
+</div>

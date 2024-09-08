@@ -2,8 +2,10 @@
 
   <h2 class="title">Create New Course</h2>
   <!-- step本身就结合了angular form -->
-  <mat-horizontal-stepper [linear]="true" class="mat-elevation-z5" labelPosition="bottom">
-    <mat-step [stepControl]="step1.form">
+  <!--开发时候，linear用false -->
+  <mat-horizontal-stepper [linear]="false" class="mat-elevation-z5" labelPosition="bottom">
+    <mat-step [stepControl]="step1.form" errorMessage="Loading page in error">
+      <!-- errorMessage用于向linear fase时候的用户提供哪个step有问题 -->
       <!-- 用变量访问一个页面内的其他元素的form，厉害 -->
       <!-- 我们的项目，一个页面是一个form，form访问reuseable shared form component，next和back可以访问当前所在的form，通过模板变量访问form -->
       <ng-template matStepLabel> course landing page details</ng-template>
@@ -12,7 +14,7 @@
         <button mat-raised-button color="primary" matStepperNext>Continue to step 2</button>
       </div>
     </mat-step>
-    <mat-step>
+    <mat-step errorMessage="Prcing in error">
       <create-course-step-2></create-course-step-2>
       <ng-template matStepLabel>course pricing details</ng-template>
       <div class="stepper-button">
