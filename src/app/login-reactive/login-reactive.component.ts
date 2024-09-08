@@ -13,6 +13,8 @@ import { createPasswordStrengthValidator } from "../validators/password-strength
   styleUrls: ["./login-reactive.component.css"],
 })
 export class LoginReactiveComponent implements OnInit {
+
+  // form:FormGroup = this.fb.group({ // 这么写，就丧失了推测能力，智能提示 formGroup<any>
   form = this.fb.group({
     email: [
       "",
@@ -41,5 +43,11 @@ export class LoginReactiveComponent implements OnInit {
 
   get password() {
     return this.form.controls["password"];
+  }
+
+  login() {
+    const formValue = this.form.value;
+    // email 和 password可以从初始值推测数据类型
+    // reactive form is strongly typed 
   }
 }
