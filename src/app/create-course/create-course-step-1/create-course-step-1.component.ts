@@ -25,6 +25,8 @@ export class CreateCourseStep1Component implements OnInit {
       }, // 全部是同步的validator
     ],
     releaseAt: [new Date(), Validators.required],
+    downloadsAllowed: [false, Validators.requiredTrue],
+    longDescription: ["", [Validators.required, Validators.minLength(3)]],
   });
 
   constructor(private fb: FormBuilder, private courses: CoursesService) {}
