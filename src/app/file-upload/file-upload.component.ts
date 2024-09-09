@@ -15,16 +15,35 @@ import { noop, of } from "rxjs";
   templateUrl: "file-upload.component.html",
   styleUrls: ["file-upload.component.scss"],
 })
-export class FileUploadComponent {
+export class FileUploadComponent implements ControlValueAccessor {
   @Input()
   requiredFileType: string;
   fileUploadError = false;
 
   fileName = "";
   uploadProgress: number;
-
+  onChange = (fileName: string) => {};
+  onTouched = () => {};
+  disabled: boolean = false;
   constructor(private http: HttpClient) {}
+  // form 会call这个方法
+  writeValue(value: any) {
+    this.fileName = value;
+  }
+  registerOnChange(onChange: any) {
+    this.onChange = onChange;
+  }
+  registerOnTouched(onTouched: any) {
+    this.onTouched = onTouched;
+  }
+  setDisabledState?(disabled: boolean) {
+    this.disabled = disabled;
+  }
 
+  onClick(fileUpload: HTMLInputElement) {
+    this.onTouched();
+    fileUpload.click();
+  }
   onFileSelected(event) {
     const file: File = event.target.files[0];
     if (file) {
@@ -54,6 +73,8 @@ export class FileUploadComponent {
               (100 * event.loaded) / event.total
             );
             console.log(this.uploadProgress);
+          } else if (event.type == HttpEventType.Response) {
+            this.onChange(this.fileName);
           }
         });
     }

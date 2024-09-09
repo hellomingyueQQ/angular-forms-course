@@ -5,7 +5,7 @@
         <input matInput [disabled]="true" [value]="fileName">
         <!-- 这个组件不能被编辑，用户没有选择文件时候，为空 -->
     </mat-form-field>
-    <button mat-mini-fab color="primary" class="upload-btn" (click)="fileUpload.click()">
+    <button mat-mini-fab color="primary" class="upload-btn" (click)="onClick(fileUpload)" [disabled]="disabled">
         <mat-icon>attach_file</mat-icon>
     </button>
 </div>
