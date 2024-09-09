@@ -15,8 +15,15 @@ import { noop, Subscription } from 'rxjs';
   selector: 'address-form',
   templateUrl: './address-form.component.html',
   styleUrls: ['./address-form.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: AddressFormComponent,
+      multi: true,
+    },
+  ],
 })
-export class AddressFormComponent implements ControlValueAccessor {
+export class AddressFormComponent implements ControlValueAccessor, OnDestroy {
   @Input()
   legend: string;
 
@@ -29,6 +36,8 @@ export class AddressFormComponent implements ControlValueAccessor {
 
   onTouched = () => {};
 
+  onChangeSub: Subscription;
+
   constructor(private fb: FormBuilder) {}
   writeValue(value: any): void {
     if (value) {
@@ -36,7 +45,7 @@ export class AddressFormComponent implements ControlValueAccessor {
     }
   }
   registerOnChange(onChange: any) {
-    this.form.valueChanges.subscribe(onChange);
+    this.onChangeSub = this.form.valueChanges.subscribe(onChange);
   }
   registerOnTouched(onTouched: any) {
     this.onTouched = onTouched;
@@ -47,5 +56,9 @@ export class AddressFormComponent implements ControlValueAccessor {
     } else {
       this.form.enable();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.onChangeSub.unsubscribe();
   }
 }
