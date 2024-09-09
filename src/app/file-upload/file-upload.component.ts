@@ -6,6 +6,7 @@ import {
   ControlValueAccessor,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
+  ValidationErrors,
   Validator,
 } from "@angular/forms";
 import { noop, of } from "rxjs";
@@ -20,19 +21,42 @@ import { noop, of } from "rxjs";
       useExisting: FileUploadComponent,
       multi: true,
     },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: FileUploadComponent,
+      multi: true,
+    },
   ],
 })
-export class FileUploadComponent implements ControlValueAccessor {
+export class FileUploadComponent implements ControlValueAccessor, Validator {
   @Input()
   requiredFileType: string;
   fileUploadError = false;
-
+  fileUploadSuccess = false;
   fileName = "";
   uploadProgress: number;
   onChange = (fileName: string) => {};
   onTouched = () => {};
+  onValidatorChange = () => {};
   disabled: boolean = false;
   constructor(private http: HttpClient) {}
+  validate(control: AbstractControl): ValidationErrors | null {
+    if (this.fileUploadSuccess) {
+      return null;
+    }
+    let errors: any = {
+      requiredFileType: this.requiredFileType,
+    };
+
+    if (this.fileUploadError) {
+      errors.uploadFailed = true;
+    }
+    return errors;
+  }
+  registerOnValidatorChange?(onValidatorChange: () => void) {
+    this.onValidatorChange = onValidatorChange;
+  }
+
   // form 会call这个方法
   writeValue(value: any) {
     this.fileName = value;
@@ -81,7 +105,9 @@ export class FileUploadComponent implements ControlValueAccessor {
             );
             console.log(this.uploadProgress);
           } else if (event.type == HttpEventType.Response) {
+            this.fileUploadSuccess = true;
             this.onChange(this.fileName);
+            this.onValidatorChange();
           }
         });
     }
