@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from "@angular/core";
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -8,13 +8,13 @@ import {
   NG_VALUE_ACCESSOR,
   Validator,
   Validators,
-} from "@angular/forms";
-import { noop, Subscription } from "rxjs";
+} from '@angular/forms';
+import { noop, Subscription } from 'rxjs';
 
 @Component({
-  selector: "address-form",
-  templateUrl: "./address-form.component.html",
-  styleUrls: ["./address-form.component.scss"],
+  selector: 'address-form',
+  templateUrl: './address-form.component.html',
+  styleUrls: ['./address-form.component.scss'],
 })
 export class AddressFormComponent implements ControlValueAccessor {
   @Input()
@@ -27,17 +27,25 @@ export class AddressFormComponent implements ControlValueAccessor {
     city: [null, [Validators.required]],
   });
 
+  onTouched = () => {};
+
   constructor(private fb: FormBuilder) {}
-  writeValue(obj: any): void {
-    throw new Error("Method not implemented.");
+  writeValue(value: any): void {
+    if (value) {
+      this.form.setValue(value);
+    }
   }
-  registerOnChange(fn: any): void {
-    throw new Error("Method not implemented.");
+  registerOnChange(onChange: any) {
+    this.form.valueChanges.subscribe(onChange);
   }
-  registerOnTouched(fn: any): void {
-    throw new Error("Method not implemented.");
+  registerOnTouched(onTouched: any) {
+    this.onTouched = onTouched;
   }
-  setDisabledState?(isDisabled: boolean): void {
-    throw new Error("Method not implemented.");
+  setDisabledState?(isDisabled: boolean) {
+    if (isDisabled) {
+      this.form.disable();
+    } else {
+      this.form.enable();
+    }
   }
 }
